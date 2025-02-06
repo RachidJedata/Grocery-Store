@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  category_id Int       @id @default(autoincrement())
+  name        String    @unique
+  products    Product[]
+  blogs       Blog[]
+}
+
+model Product {
+  product_id   String        @id @default(uuid())
+  product_name String
+  price        Decimal
+  imageUrl     String
+  dateAdded    DateTime      @default(now())
+  discount     Decimal       @default(0)
+  quantity     Int
+  nbre_bought  Int           @default(0)
+  category     Category      @relation(fields: [categoryId], references: [category_id])
+  categoryId   Int
+  users        UserProduct[] // Many-to-many relationship with User via join table
+}
+
+model User {
+  user_id  String        @id @default(uuid())
+  name     String
+  email    String        @unique
+  password String
+  products UserProduct[] // Many-to-many relationship with Product via join table
+  searches UserSearch[] // Many-to-many relationship with Search via join table
+}
+
+model Search {
+  search_id Int          @id @default(autoincrement())
+  title     String
+  users     UserSearch[] // Many-to-many relationship with User via join table
+}
+
+model UserProduct {
+  user      User    @relation(fields: [userId], references: [user_id])
+  userId    String
+  product   Product @relation(fields: [productId], references: [product_id])
+  productId String
+
+  @@id([userId, productId]) // Composite primary key
+}
+
+model UserSearch {
+  user     User   @relation(fields: [userId], references: [user_id])
+  userId   String
+  search   Search @relation(fields: [searchId], references: [search_id])
+  searchId Int
+
+  @@id([userId, searchId]) // Composite primary key
+}
+
+model Blog {
+  blog_id     String   @id @default(uuid())
+  title       String
+  body        String
+  dateCreated DateTime @default(now())
+  category    Category @relation(fields: [category_id], references: [category_id])
+  category_id Int
+}
