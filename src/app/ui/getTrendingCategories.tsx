@@ -1,6 +1,7 @@
 'use client';
 
 import { Category } from "@prisma/client";
+import clsx from "clsx";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -18,9 +19,6 @@ export default function GetTrendingCategories({ categories }: { categories: Cate
         // It's a good idea to prefix with "?" to denote the query string.
         router.replace(`?${params.toString()}#trending-products`);
     };
-    const resetParam = () => {
-
-    }
 
     return (
         <div id="trending-products" className="tabs-header d-flex justify-content-between border-bottom my-5">
@@ -28,7 +26,10 @@ export default function GetTrendingCategories({ categories }: { categories: Cate
             <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                     <button
-                        className={`nav-link text-uppercase fs-6 ${categoryActive === '' && 'active'}`}
+                        // className={`nav-link text-uppercase fs-6 ${categoryActive === '' && 'active'}`}
+                        className={clsx('nav-link text-uppercase fs-6', {
+                            'active': categoryActive === ''
+                        })}
                         id="nav-all-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-all"
@@ -45,7 +46,10 @@ export default function GetTrendingCategories({ categories }: { categories: Cate
                                 e.preventDefault(); // Prevent default link navigation
                                 handleParams(category.category_id);
                             }}
-                            className={`nav-link text-uppercase fs-6 ${categoryActive === category.category_id.toString() && 'active'}`}
+                            // className={`nav-link text-uppercase fs-6 ${categoryActive === category.category_id.toString() && 'active'}`}
+                            className={clsx('nav-link text-uppercase fs-6', {
+                                'active': categoryActive === category.category_id.toString()
+                            })}
                             id={`nav-category-${category.category_id}-tab`}
                         >
                             {category.name}

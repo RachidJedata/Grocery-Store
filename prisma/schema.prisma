@@ -15,36 +15,39 @@ model Category {
 }
 
 model Product {
-  product_id           String        @id @default(uuid())
-  product_name         String
-  price                Decimal
-  imageUrl             String
-  dateAdded            DateTime      @default(now())
-  discount             Decimal       @default(0)
-  quantity             Int
-  nbre_bought           Int           @default(0) // Changed to camelCase
-  category             Category      @relation(fields: [categoryId], references: [category_id])
-  categoryId           Int
-  users                UserProduct[] 
-  user                 User?          @relation(fields: [userCreatedProductId], references: [user_id])
-  userCreatedProductId String?        @map("user_created_product_id") // Corrected type and name
+  product_id            String      @id @default(uuid())  // Unique identifier for the product (UUID)
+  product_name          String      // Name of the product
+  price                 Float     // Price of the product
+  imageUrl              String      // URL of the product image
+  dateAdded             DateTime    @default(now()) // Timestamp of when the product was added
+  discount              Float     @default(0)  // Discount applied to the product
+  quantity              Int         // Available quantity of the product
+  rating                Float?    @default(0)  // Product rating (nullable, default is 0)
+  nbre_bought           Int         @default(0)  // Number of times the product has been bought
+  category              Category    @relation(fields: [categoryId], references: [category_id]) // Foreign key to Category
+  categoryId            Int         // Foreign key to Category table
+  users                 UserProduct[]  // Many-to-many relation with users who bought this product
+  user                  User        @relation(fields: [userCreatedProductId], references: [user_id])  // Creator of the product
+  userCreatedProductId  String      @map("user_created_product_id") // Foreign key (with custom name mapping)
 }
+
 
 model User {
   user_id         String        @id @default(uuid())
   name            String
   email           String        @unique
   password        String
-  products        UserProduct[] 
-  searches        UserSearch[] 
+  products        UserProduct[]
+  searches        UserSearch[]
   productsCreated Product[]
+  avatar          String
   isVendor        Boolean       @default(false) // Moved from Product
 }
 
 model Search {
   search_id Int          @id @default(autoincrement())
   title     String
-  users     UserSearch[] 
+  users     UserSearch[]
 }
 
 model UserProduct {

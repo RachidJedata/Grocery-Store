@@ -39,7 +39,7 @@ export async function NewlyArrivedBrands() {
                                         key={product.product_id} // Adding a key for React list rendering
                                         className="relative nav-link h-44 flex category-item swiper-slide"
                                     >
-                                        {product.discount.toNumber() > 0 && (
+                                        {product.discount > 0 && (
                                             <span className="absolute top-2 left-2 badge bg-success position-absolute m-3" >{product.discount.toString()}%</span>
                                         )}
                                         <Image

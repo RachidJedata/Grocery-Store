@@ -15,12 +15,18 @@ export async function getTrendingCategories() {
     LIMIT 2;
 `;
 }
-export async function getProducs({ query }: { query?: string }) {
-    prisma.$queryRaw<Product[]> `
-    SELECT * FROM p.* FROM "Products" p
-    JOIN "Category" ON "category_id" = p.categoryId,
-    JOIN "User" u ON u.name = ${query}
-    WHERE "product_name" LIKE '%${query}%'
-    OR 
-    `;
+export async function getProductsByCategory(categoryId?: string | number) {
+    if (!categoryId) return await prisma.product.findMany();
+    return await prisma.product.findMany({
+        where: { categoryId: Number(categoryId) }
+    })
 }
+// export async function getProducs({ query }: { query?: string }) {
+//     prisma.$queryRaw<Product[]> `
+//     SELECT * FROM p.* FROM "Products" p
+//     JOIN "Category" ON "category_id" = p.categoryId,
+//     JOIN "User" u ON u.name = ${query}
+//     WHERE "product_name" LIKE '%${query}%'
+//     OR
+//     `;
+// }

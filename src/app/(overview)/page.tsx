@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import { NewlyArrivedBrands } from "./ui/newlyArrivedBrands";
-import { getTrendingCategories } from "./lib/action";
-import GetTrendingCategories from "./ui/getTrendingCategories";
-import { GetProducts } from "./ui/getProducts";
+import { NewlyArrivedBrands } from "../ui/newlyArrivedBrands";
+import { getTrendingCategories } from "../lib/action";
+import GetTrendingCategories from "../ui/getTrendingCategories";
+import { GetProducts } from "../ui/getProducts";
+import { Suspense } from "react";
+
+
 
 export default async function Home() {
   const trendingCategories = await getTrendingCategories();
@@ -167,11 +170,15 @@ export default async function Home() {
             <div className="col-md-12">
 
               <div className="bootstrap-tabs product-tabs">
-                <GetTrendingCategories categories={trendingCategories} />
+                <Suspense>
+                  <GetTrendingCategories categories={trendingCategories} />
+                </Suspense>
                 <div className="tab-content" id="nav-tabContent">
                   <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
 
-                    <GetProducts />
+                    <Suspense>
+                      <GetProducts />
+                    </Suspense>
                     {/* <!-- / product-grid --> */}
 
                   </div>

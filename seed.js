@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 const products = [
     {
         product_name: "Fresh Bananas",
@@ -81,9 +83,32 @@ const categories = [
     { name: "Juices" },
     { name: "Condiments" }
 ];
+const users = [
+    { name: "rachid jedata", email: 'me@gmail.com', password: 'rachid', avatar: 'images/reviewer-1.jpg', isVendor: true },
+    { name: "malika id lahaj", email: 'idlahaj@gmail.com', password: 'malika', avatar: 'images/reviewer-2.jpg', isVendor: true },
+    { name: "rim jedata", email: 'rim.j@hotmail.com', password: 'rim', avatar: 'images/reviewer-3.jpg', isVendor: false }
+]
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
+
+
+async function seedUsers() {
+    // On peut soit retirer le champ avatar s'il n'est pas voulu :
+    const hashedUsers = await Promise.all(
+      users.map(async (user) => {        
+        // Hashage du mot de passe
+        user.password = await bcrypt.hash(user.password, 10);
+        return user;
+      })
+    );
+  
+    await prisma.user.createMany({
+      data: hashedUsers, // On fournit ici le tableau d'utilisateurs
+    });
+  
+    console.log("Utilisateurs créés avec succès !");
+  }
 
 export async function main() {
     // Seed categories
@@ -117,6 +142,9 @@ export async function main() {
             }
         });
     }
+
+    //seed Users
+    seedUsers();
 }
 
 main()
