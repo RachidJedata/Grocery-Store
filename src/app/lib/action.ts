@@ -1,5 +1,5 @@
 import prisma from '@/app/lib/prisma';
-import { Category } from '@prisma/client';
+import { Category, Product } from '@prisma/client';
 
 export async function getCategories() {
     return await prisma.category.findMany();
@@ -16,5 +16,11 @@ export async function getTrendingCategories() {
 `;
 }
 export async function getProducs({ query }: { query?: string }) {
-    return query;
+    prisma.$queryRaw<Product[]> `
+    SELECT * FROM p.* FROM "Products" p
+    JOIN "Category" ON "category_id" = p.categoryId,
+    JOIN "User" u ON u.name = ${query}
+    WHERE "product_name" LIKE '%${query}%'
+    OR 
+    `;
 }
