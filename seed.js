@@ -1,4 +1,6 @@
 import bcrypt from 'bcrypt'
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 const products = [
     {
@@ -89,62 +91,75 @@ const users = [
     { name: "rim jedata", email: 'rim.j@hotmail.com', password: 'rim', avatar: 'images/reviewer-3.jpg', isVendor: false }
 ]
 
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+const ads = [
+    { title: "Luxa Dark Chocolate", description: "Very tasty & creamy vanilla flavour creamy muffins.", ImageUrl: "images/ad-image-3.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+    { title: "Creamy Muffins", description: "Very tasty & creamy vanilla flavour creamy muffins.", ImageUrl: "images/ad-image-4.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+    { title: "Fresh Smoothie & Summer Juice", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.", ImageUrl: "images/product-thumb-1.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+    { title: "Heinz Tomato Ketchup", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.", ImageUrl: "images/product-thumb-2.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+    { title: "Fruits & Vegetables", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.", ImageUrl: "images/product-thumb-2.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+    { title: "Baked Product", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.", ImageUrl: "images/product-thumb-2.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
+];
 
+async function seedAds() {    
+    await prisma.ads.createMany({
+        data: ads
+    });
+}
 
 async function seedUsers() {
     // On peut soit retirer le champ avatar s'il n'est pas voulu :
     const hashedUsers = await Promise.all(
-      users.map(async (user) => {        
-        // Hashage du mot de passe
-        user.password = await bcrypt.hash(user.password, 10);
-        return user;
-      })
+        users.map(async (user) => {
+            // Hashage du mot de passe
+            user.password = await bcrypt.hash(user.password, 10);
+            return user;
+        })
     );
-  
+
     await prisma.user.createMany({
-      data: hashedUsers, // On fournit ici le tableau d'utilisateurs
+        data: hashedUsers, // On fournit ici le tableau d'utilisateurs
     });
-  
+
     console.log("Utilisateurs créés avec succès !");
-  }
+}
 
 export async function main() {
     // Seed categories
-    const categoryRecords = await Promise.all(
-        categories.map(category =>
-            prisma.category.upsert({
-                where: { name: category.name },
-                update: {},
-                create: { name: category.name }
-            })
-        )
-    );
+    // const categoryRecords = await Promise.all(
+    //     categories.map(category =>
+    //         prisma.category.upsert({
+    //             where: { name: category.name },
+    //             update: {},
+    //             create: { name: category.name }
+    //         })
+    //     )
+    // );
 
     // Seed products
-    for (const product of products) {
-        await prisma.product.create({
-            data: {
-                product_name: product.product_name,
-                price: product.price,
-                imageUrl: product.imageUrl,
-                quantity: product.quantity,
-                discount: product.discount,
-                category: {
-                    connectOrCreate: {
-                        where: { name: product.category },
-                        create: { name: product.category }
-                    }
-                },
-                nbre_bought: 0,
-                dateAdded: new Date()
-            }
-        });
-    }
+    // for (const product of products) {
+    //     await prisma.product.create({
+    //         data: {
+    //             product_name: product.product_name,
+    //             price: product.price,
+    //             imageUrl: product.imageUrl,
+    //             quantity: product.quantity,
+    //             discount: product.discount,
+    //             category: {
+    //                 connectOrCreate: {
+    //                     where: { name: product.category },
+    //                     create: { name: product.category }
+    //                 }
+    //             },
+    //             nbre_bought: 0,
+    //             dateAdded: new Date()
+    //         }
+    //     });
+    // }
 
     //seed Users
-    seedUsers();
+    // seedUsers();
+    seedAds();
+    console.log("Ads created");
 }
 
 main()
