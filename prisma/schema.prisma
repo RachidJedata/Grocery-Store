@@ -15,22 +15,30 @@ model Category {
 }
 
 model Product {
-  product_id            String      @id @default(uuid())  // Unique identifier for the product (UUID)
-  product_name          String      // Name of the product
-  price                 Float     // Price of the product
-  imageUrl              String      // URL of the product image
-  dateAdded             DateTime    @default(now()) // Timestamp of when the product was added
-  discount              Float     @default(0)  // Discount applied to the product
-  quantity              Int         // Available quantity of the product
-  rating                Float?    @default(0)  // Product rating (nullable, default is 0)
-  nbre_bought           Int         @default(0)  // Number of times the product has been bought
-  category              Category    @relation(fields: [categoryId], references: [category_id]) // Foreign key to Category
-  categoryId            Int         // Foreign key to Category table
-  users                 UserProduct[]  // Many-to-many relation with users who bought this product
-  user                  User        @relation(fields: [userCreatedProductId], references: [user_id])  // Creator of the product
-  userCreatedProductId  String      @map("user_created_product_id") // Foreign key (with custom name mapping)
+  product_id           String        @id @default(uuid()) // Unique identifier for the product (UUID)
+  product_name         String // Name of the product
+  price                Float // Price of the product
+  imageUrl             String // URL of the product image
+  dateAdded            DateTime      @default(now()) // Timestamp of when the product was added
+  discount             Float         @default(0) // Discount applied to the product
+  quantity             Int // Available quantity of the product
+  rating               Float?        @default(0) // Product rating (nullable, default is 0)
+  nbre_bought          Int           @default(0) // Number of times the product has been bought
+  category             Category      @relation(fields: [categoryId], references: [category_id]) // Foreign key to Category
+  categoryId           Int // Foreign key to Category table
+  users                UserProduct[] // Many-to-many relation with users who bought this product
+  user                 User          @relation(fields: [userCreatedProductId], references: [user_id]) // Creator of the product
+  userCreatedProductId String        @map("user_created_product_id") // Foreign key (with custom name mapping)
+  ads                  Ads[]
 }
 
+model Ads {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  product     Product @relation(fields: [productId], references: [product_id])
+  productId   String  @map("product_id")
+}
 
 model User {
   user_id         String        @id @default(uuid())

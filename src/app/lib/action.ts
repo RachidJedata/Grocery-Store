@@ -1,5 +1,5 @@
 import prisma from '@/app/lib/prisma';
-import { Category, Product } from '@prisma/client';
+import { Category } from '@prisma/client';
 
 export async function getCategories() {
     return await prisma.category.findMany();
@@ -20,6 +20,17 @@ export async function getProductsByCategory(categoryId?: string | number) {
     return await prisma.product.findMany({
         where: { categoryId: Number(categoryId) }
     })
+}
+
+export async function getBestProducts() {
+    return await prisma.product.findMany(
+        {
+            orderBy:{
+                nbre_bought:'asc'
+            },
+            take:7
+        }
+    )
 }
 // export async function getProducs({ query }: { query?: string }) {
 //     prisma.$queryRaw<Product[]> `

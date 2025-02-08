@@ -33,6 +33,7 @@ export async function NewlyArrivedBrands() {
                     <div className="col-md-12">
                         <div className="category-carousel swiper">
                             <div className="swiper-wrapper">
+
                                 {products.map(product => (
                                     <Link
                                         href={`/product/${product.product_id}`} // Replace with actual product link
@@ -40,7 +41,7 @@ export async function NewlyArrivedBrands() {
                                         className="relative nav-link h-44 flex category-item swiper-slide"
                                     >
                                         {product.discount > 0 && (
-                                            <span className="absolute top-2 left-2 badge bg-success position-absolute m-3" >{product.discount.toString()}%</span>
+                                            <span className="absolute top-2 left-2 badge bg-success position-absolute m-3" >-{product.discount.toString()}%</span>
                                         )}
                                         <Image
                                             width={90}
@@ -52,6 +53,7 @@ export async function NewlyArrivedBrands() {
                                         <h3 className="category-title">{product.product_name}</h3>
                                     </Link>
                                 ))}
+            
                             </div>
                         </div>
                     </div>
