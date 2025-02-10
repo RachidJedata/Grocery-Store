@@ -100,7 +100,15 @@ const ads = [
     { title: "Baked Product", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.", ImageUrl: "images/product-thumb-2.png", productId: "70d40e4e-2a37-4c7d-a7df-1a2b92397abc" },
 ];
 
-async function seedAds() {    
+const blogs = [
+    { title: 'Benifits of vegetables in long term of living humans in life', body: 'Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...', categoryId: 1, imageUrl: "images/post-thumb-1.jpg" },
+    { title: 'Lorem ipsum dolor sit amet, consectetur adipi elit', body: 'Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...', categoryId: 1, imageUrl: "images/post-thumb-2.jpg" },
+    { title: 'Lorem ipsum dolor sit amet, consectetur adipi elit', body: 'Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...', categoryId: 1, imageUrl: "images/post-thumb-3.jpg" },
+    { title: 'Lorem ipsum dolor sit amet, consectetur adipi elit', body: 'Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...', categoryId: 1, imageUrl: "images/post-thumb-3.jpg" },
+    { title: 'Lorem ipsum dolor sit amet, consectetur adipi elit', body: 'Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...', categoryId: 1, imageUrl: "images/post-thumb-3.jpg" },
+];
+
+async function seedAds() {
     await prisma.ads.createMany({
         data: ads
     });
@@ -121,6 +129,12 @@ async function seedUsers() {
     });
 
     console.log("Utilisateurs créés avec succès !");
+}
+
+async function seedBlogs() {
+    await prisma.blog.createMany({
+        data: blogs
+    });
 }
 
 export async function main() {
@@ -158,8 +172,8 @@ export async function main() {
 
     //seed Users
     // seedUsers();
-    seedAds();
-    console.log("Ads created");
+    // seedAds();
+    // seedBlogs();
 }
 
 main()

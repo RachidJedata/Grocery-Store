@@ -1,7 +1,7 @@
 import { Category } from "@prisma/client";
 import Link from "next/link";
 
-export default function ShowCategories({ categories }: { categories: Category[] }) {
+export function ShowCategories({ categories }: { categories: Category[] }) {
     return (
         <ul className="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
             {categories.map(category => (
@@ -10,17 +10,5 @@ export default function ShowCategories({ categories }: { categories: Category[] 
                 </li>
             ))}
         </ul>
-    );
-}
-export async function CategorySelect({ categories }: { categories: Category[] }) {
-    return (
-        <select className="form-select border-0 bg-transparent">
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-                <option key={category.category_id} value={category.category_id}>
-                    {category.name}
-                </option>
-            ))}
-        </select>
     );
 }

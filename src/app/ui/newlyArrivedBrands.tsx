@@ -19,7 +19,7 @@ export async function NewlyArrivedBrands() {
                             <h2 className="section-title">New Arrived Brands</h2>
 
                             <div className="d-flex align-items-center">
-                                <a href="#" className="btn-link text-decoration-none">View All Categories →</a>
+                                <Link href="products" className="btn-link text-decoration-none">View All Products →</Link>
                                 <div className="swiper-buttons">
                                     <button className="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
                                     <button className="swiper-next category-carousel-next btn btn-yellow">❯</button>

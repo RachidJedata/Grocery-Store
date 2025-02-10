@@ -1,17 +1,16 @@
-import Image from "next/image";
-import { Icon } from "@iconify/react";
 import { NewlyArrivedBrands } from "../ui/newlyArrivedBrands";
-import { getBestProducts, getTrendingCategories } from "../lib/action";
+import { getTrendingCategories } from "../lib/action";
 import GetTrendingCategories from "../ui/getTrendingCategories";
 import { GetProducts } from "../ui/getProducts";
 import { Suspense } from "react";
-import { BestProducts } from "../ui/best-products";
+import { Ad1, Ad2, Ad3 } from "../ui/ads";
+import Image from "next/image";
+import { Blogs } from "../ui/Blogs";
 
 
 
 export default async function Home() {
   const trendingCategories = await getTrendingCategories();
-  const products = await getBestProducts();
   return (
     <>
       <svg xmlns="http://www.w3.org/2000/svg" className="hidden">
@@ -70,84 +69,13 @@ export default async function Home() {
           <div className="row">
             <div className="col-md-12">
 
-              <div className="banner-blocks">
+              <div className="container mx-auto p-4 space-y-6">
 
-                <div className="banner-ad large bg-info block-1">
+                {/* Hero Carousel Section */}
+                <Ad1 />
 
-                  <div className="swiper main-swiper">
-                    <div className="swiper-wrapper">
-
-                      <div className="swiper-slide">
-                        <div className="row banner-content p-5">
-                          <div className="content-wrapper col-md-7">
-                            <div className="categories my-3">100% natural</div>
-                            <h3 className="display-4">Fresh Smoothie & Summer Juice</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.</p>
-                            <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Shop Now</a>
-                          </div>
-                          <div className="Image-wrapper col-md-5">
-                            <img src="images/product-thumb-1.png" className="Image-fluid" alt="" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="swiper-slide">
-                        <div className="row banner-content p-5">
-                          <div className="content-wrapper col-md-7">
-                            <div className="categories mb-3 pb-3">100% natural</div>
-                            <h3 className="banner-title">Fresh Smoothie & Summer Juice</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.</p>
-                            <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">Shop Collection</a>
-                          </div>
-                          <div className="Image-wrapper col-md-5">
-                            <img src="images/product-thumb-1.png" className="Image-fluid" alt="" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="swiper-slide">
-                        <div className="row banner-content p-5">
-                          <div className="content-wrapper col-md-7">
-                            <div className="categories mb-3 pb-3">100% natural</div>
-                            <h3 className="banner-title">Heinz Tomato Ketchup</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim massa diam elementum.</p>
-                            <a href="#" className="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">Shop Collection</a>
-                          </div>
-                          <div className="Image-wrapper col-md-5">
-                            <img src="images/product-thumb-2.png" className="Image-fluid" alt="" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="swiper-pagination"></div>
-
-                  </div>
-                </div>
-
-                <div className="banner-ad bg-success-subtle block-2 ad6">
-                  <div className="row banner-content p-5">
-
-                    <div className="content-wrapper col-md-7">
-                      <div className="categories sale mb-3 pb-3">20% off</div>
-                      <h3 className="banner-title">Fruits & Vegetables</h3>
-                      <a href="#" className="d-flex align-items-center nav-link">Shop Collection <svg width="24" height="24"><use href="#arrow-right"></use></svg></a>
-                    </div>
-
-                  </div>
-                </div>
-
-                <div className="banner-ad bg-danger block-3 ad2">
-                  <div className="row banner-content p-5">
-
-                    <div className="content-wrapper col-md-7">
-                      <div className="categories sale mb-3 pb-3">15% off</div>
-                      <h3 className="item-title">Baked Products</h3>
-                      <a href="#" className="d-flex align-items-center nav-link">Shop Collection <svg width="24" height="24"><use href="#arrow-right"></use></svg></a>
-                    </div>
-
-                  </div>
-                </div>
+                {/* Promotional Cards Grid */}
+                <Ad2 />
 
               </div>
               {/* <!-- / Banner Blocks --> */}
@@ -189,117 +117,14 @@ export default async function Home() {
       {/* Ads */}
       <section className="py-5">
         <div className="container-fluid">
-          <div className="row">
-
-            <div className="col-md-6">
-              <div className="banner-ad bg-danger mb-3 ad3">
-                <div className="banner-content p-5">
-
-                  <div className="categories text-primary fs-3 fw-bold">Upto 25% Off</div>
-                  <h3 className="banner-title">Luxa Dark Chocolate</h3>
-                  <p>Very tasty & creamy vanilla flavour creamy muffins.</p>
-                  <a href="#" className="btn btn-dark text-uppercase">Show Now</a>
-
-                </div>
-
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="banner-ad bg-info add4">
-                <div className="banner-content p-5">
-
-                  <div className="categories text-primary fs-3 fw-bold">Upto 25% Off</div>
-                  <h3 className="banner-title">Creamy Muffins</h3>
-                  <p>Very tasty & creamy vanilla flavour creamy muffins.</p>
-                  <a href="#" className="btn btn-dark text-uppercase">Show Now</a>
-
-                </div>
-
-              </div>
-            </div>
-
-          </div>
+          <Ad3 />
         </div>
       </section>
 
       {/* Blogs */}
-      <section id="latest-blog" className="py-5">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="section-header d-flex align-items-center justify-content-between my-5">
-              <h2 className="section-title">Our Recent Blog</h2>
-              <div className="btn-wrap align-right">
-                <a href="#" className="d-flex align-items-center nav-link">Read All Articles <svg width="24" height="24"><use href="#arrow-right"></use></svg></a>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              <article className="post-item card border-0 shadow-sm p-3">
-                <div className="image-holder zoom-effect">
-                  <a href="#">
-                    <img src="images/post-thumb-1.jpg" alt="post" className="card-Image-top" />
-                  </a>
-                </div>
-                <div className="card-body">
-                  <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                    <div className="meta-date"><svg width="16" height="16"><use href="#calendar"></use></svg>22 Aug 2021</div>
-                    <div className="meta-categories"><svg width="16" height="16"><use href="#category"></use></svg>tips & tricks</div>
-                  </div>
-                  <div className="post-header">
-                    <h3 className="post-title">
-                      <a href="#" className="text-decoration-none">Top 10 casual look ideas to dress up your kids</a>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div className="col-md-4">
-              <article className="post-item card border-0 shadow-sm p-3">
-                <div className="image-holder zoom-effect">
-                  <a href="#">
-                    <img src="images/post-thumb-2.jpg" alt="post" className="card-Image-top" />
-                  </a>
-                </div>
-                <div className="card-body">
-                  <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                    <div className="meta-date"><svg width="16" height="16"><use href="#calendar"></use></svg>25 Aug 2021</div>
-                    <div className="meta-categories"><svg width="16" height="16"><use href="#category"></use></svg>trending</div>
-                  </div>
-                  <div className="post-header">
-                    <h3 className="post-title">
-                      <a href="#" className="text-decoration-none">Latest trends of wearing street wears supremely</a>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div className="col-md-4">
-              <article className="post-item card border-0 shadow-sm p-3">
-                <div className="image-holder zoom-effect">
-                  <a href="#">
-                    <img src="images/post-thumb-3.jpg" alt="post" className="card-Image-top" />
-                  </a>
-                </div>
-                <div className="card-body">
-                  <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                    <div className="meta-date"><svg width="16" height="16"><use href="#calendar"></use></svg>28 Aug 2021</div>
-                    <div className="meta-categories"><svg width="16" height="16"><use href="#category"></use></svg>inspiration</div>
-                  </div>
-                  <div className="post-header">
-                    <h3 className="post-title">
-                      <a href="#" className="text-decoration-none">10 Different Types of comfortable clothes ideas for women</a>
-                    </h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Suspense>
+        <Blogs />
+      </Suspense>
 
       {/* Searchs */}
       <section className="py-5">
@@ -329,7 +154,7 @@ export default async function Home() {
       <footer className="py-5">
         <div className="container-fluid">
           <div className="mx-auto flex flex-col items-center footer-menu">
-            <img width={300} height={300} src="/images/logo.png" alt="logo" />
+            <Image width={300} height={300} src="/images/logo.png" alt="logo" />
             <div className="social-links mt-5">
               <ul className="d-flex list-unstyled gap-2">
                 <li>
@@ -360,7 +185,7 @@ export default async function Home() {
               </ul>
             </div>
             <div className="mt-5 copyright">
-              <p>© 2023 Foodmart. All rights reserved.</p>
+              <p>© 2025 Foodmart. All rights reserved.</p>
             </div>
           </div>
         </div>

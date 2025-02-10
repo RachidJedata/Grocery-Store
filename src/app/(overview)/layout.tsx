@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "@/app/globals.css"; // Your global CSS
+import "@/app/globals.css";
+import Image from "next/image";
 
 import { getCategories } from "../lib/action";
 
 import Script from "next/script";
-import ShowCategories, { CategorySelect } from "../ui/showCategories";
+import { ShowCategories } from "../ui/showCategories";
 import Link from "next/link";
+import { SearchInput, SearchInputMobile } from "../ui/searchInput";
+import { Suspense } from "react";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,22 +80,8 @@ export default async function RootLayout({
           </div>
         </div>
 
-        <div className="offcanvas offcanvas-end" data-bs-scroll="true" tabIndex={-1} id="offcanvasSearch" aria-labelledby="Search">
-          <div className="offcanvas-header justify-content-center">
-            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div className="offcanvas-body">
-            <div className="order-md-last">
-              <h4 className="d-flex justify-content-between align-items-center mb-3">
-                <span className="text-primary">Search</span>
-              </h4>
-              <form role="search" action="index.html" method="get" className="d-flex mt-3 gap-0">
-                <input className="form-control rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?" />
-                <button className="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
-              </form>
-            </div>
-          </div>
-        </div>
+        {/* search for mobile */}
+        <SearchInputMobile />
 
         <header>
           <div className="container-fluid">
@@ -100,21 +90,17 @@ export default async function RootLayout({
               <div className="col-sm-4 col-lg-3 text-center text-sm-start">
                 <div className="main-logo">
                   <Link href="/">
-                    <img src="/images/logo.png" alt="logo" className="Image-fluid" />
+                    <Image width={250} height={250} src="/images/logo.png" alt="logo" className="Image-fluid" />
                   </Link>
                 </div>
               </div>
 
               <div className="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
                 <div className="search-bar row bg-light p-2 my-2 rounded-4">
-                  <div className="col-md-4 d-none d-md-block">
-                    <CategorySelect categories={categories} />
-                  </div>
-                  <div className="col-11 col-md-7">
-                    <form id="search-form" className="text-center" action="index.html" method="post">
-                      <input type="text" className="form-control border-0 bg-transparent" placeholder="Search for products" />
-                    </form>
-                  </div>
+                  <Suspense>
+                    <SearchInput categories={categories} />
+                  </Suspense>
+
                   <button className="col-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" /></svg>
                   </button>

@@ -9,7 +9,7 @@ export async function GET(request: Request) {
 
   try {
     const products = await prisma.product.findMany({
-      where: categoryId ? { categoryId: Number(categoryId) } : undefined,
+      where: categoryId ? { categoryId: Number(categoryId)} : undefined,
       take: 10,
       include: { category: true }
     });
