@@ -79,14 +79,18 @@ export async function getLatestBlogs() {
         take: 3
     })
 }
-export async function searchForProducts(query: string, categoryId?: number, limit?: number, fields?: string[]) {
+export async function searchForProducts(query: string, categoryId?: number, limit?: number, offset?: number, fields?: string[]) {
 
     // Use Prisma.sql for safe SQL template tagging
     const categoryCondition = categoryId
         ? Prisma.sql`AND p."categoryId" = ${categoryId}`
         : Prisma.empty;
 
-    const limitCondtion = limit && limit > 0 ? Prisma.sql`LIMIT ${limit}` : Prisma.empty;
+    // Add a leading space in the LIMIT clause fragment.
+    const limitCondition =
+        limit && limit > 0
+            ? Prisma.sql` LIMIT ${limit} OFFSET ${offset}`
+            : Prisma.empty;
 
     // If custom fields are provided, validate and build the select clause.
     let selectClause = 'p.*';
@@ -100,7 +104,7 @@ export async function searchForProducts(query: string, categoryId?: number, limi
     }
 
     try {
-        return await prisma.$queryRaw<Product[]> `
+        const products = await prisma.$queryRaw<Product[]> `
             SELECT ${Prisma.raw(selectClause)}
             FROM "Product" p
             JOIN "User" u ON u.user_id = p.user_created_product_id
@@ -109,8 +113,23 @@ export async function searchForProducts(query: string, categoryId?: number, limi
                 OR u.name ILIKE '%' || ${query.trim()} || '%'
             )
             ${categoryCondition}
-            ${limitCondtion}
+            ${limitCondition}
+            
         `;
+        const totalProductsCount = await prisma.$queryRaw<{ count: number }[]>`
+            SELECT COUNT(p.*)
+            FROM "Product" p
+            JOIN "User" u ON u.user_id = p.user_created_product_id
+            WHERE (
+                p.product_name ILIKE '%' || ${query.trim()} || '%' 
+                OR u.name ILIKE '%' || ${query.trim()} || '%'
+            )
+            ${categoryCondition}
+        `;
+        return {
+            products,
+            totalProductsCount: Number(totalProductsCount[0].count || 0)
+        }
     } catch (error) {
         console.error("Search query failed:", error);
         throw new Error("Failed to execute product search");

@@ -9,12 +9,16 @@ import { useDebouncedCallback } from 'use-debounce'
 export function SearchInput({ categories }: { categories: Category[] }) {
     const [isFocused, setIsFocused] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [totalProductsCount, setTotalProductsCount] = useState(0);
     const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
 
     const handleSearch = useDebouncedCallback((query) => {
         const fetchProductNames = async () => {
-            const data = await fetch(`api/search?query=${query}&categoryId=${selectedCategory}`);
-            setSuggestedProducts(await data.json());
+            const response = await fetch(`api/search?query=${query}&categoryId=${selectedCategory}`);
+            const { products, totalProductsCount } = await response.json();
+            console.log(products);
+            setSuggestedProducts(products);
+            setTotalProductsCount(totalProductsCount);
         }
         fetchProductNames();
     }, 1000);
@@ -46,7 +50,7 @@ export function SearchInput({ categories }: { categories: Category[] }) {
             </div>
             <div className={`w-2/5 bg-slate-200 divide-y rounded-lg transition duration-500 h-96 absolute top-20 z-10 ${isFocused ? 'block' : 'hidden'
                 }`} >
-                {suggestedProducts.map(product => (
+                {suggestedProducts && suggestedProducts.map(product => (
                     <div className="block py-2" key={product.product_id}>
                         <Link
                             onMouseDown={(e) => e.preventDefault()}
@@ -55,6 +59,13 @@ export function SearchInput({ categories }: { categories: Category[] }) {
                             href={`/product/${product.product_id}`}>{product.product_name}</Link>
                     </div>
                 ))}
+                <div className="text-sm text-orange-500 absolute bottom-1">
+                    {totalProductsCount > 9 && (
+                        <>
+                            Click Enter To View More Results
+                        </>
+                    )}
+                </div>
             </div>
         </>
     );
