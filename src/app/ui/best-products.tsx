@@ -21,7 +21,7 @@ export function BestProducts({ products }: { products: Product[] }) {
 
                     {/* Product Image */}
                     <figure>
-                        <a href={`/products/${product.product_id}`}>
+                        <a href={`/product/${product.product_id}`}>
                             <img
                                 src={product.imageUrl}
                                 className="tab-image"

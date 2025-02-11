@@ -2,10 +2,25 @@
 
 import prisma from '@/app/lib/prisma';
 import { Category, Prisma, Product } from '@prisma/client';
-import { searchType } from '../utils/types';
 
 export async function getCategories() {
     return await prisma.category.findMany();
+}
+
+export async function getProduct(id: string) {
+    return await prisma.product.findFirstOrThrow({
+        include: {
+            category: {
+                select: {
+                    name: true,
+
+                }
+            }
+        },
+        where: {
+            product_id: id
+        }
+    })
 }
 
 export async function getTrendingCategories() {
@@ -18,9 +33,10 @@ export async function getTrendingCategories() {
     LIMIT 2;
 `;
 }
-export async function getProductsByCategory(categoryId?: string | number) {
+export async function getProductsByCategory(categoryId?: string | number, limit?: number) {
     return await prisma.product.findMany({
-        ...(categoryId ? { where: { categoryId: Number(categoryId) } } : {})
+        ...(categoryId ? { where: { categoryId: Number(categoryId) } } : {}),
+        ...(limit ? { take: limit } : {})
     })
 }
 
@@ -34,6 +50,19 @@ export async function getBestProducts() {
         }
     )
 }
+const ALLOWED_PRODUCT_FIELDS = new Set([
+    "product_id",              // Unique identifier for the product (UUID)
+    "product_name",            // Name of the product
+    "price",                   // Price of the product
+    "imageUrl",                // URL of the product image
+    "dateAdded",               // Timestamp of when the product was added
+    "discount",                // Discount applied to the product
+    "quantity",                // Available quantity of the product
+    "rating",                  // Product rating (nullable, default is 0)
+    "nbre_bought",             // Number of times the product has been bought
+    "categoryId",              // Foreign key to Category table
+    "user_created_product_id"  // Foreign key for the product creator (mapped column)
+]);
 
 export async function getLatestBlogs() {
     return await prisma.blog.findMany({
@@ -50,43 +79,40 @@ export async function getLatestBlogs() {
         take: 3
     })
 }
-export async function searchForProducts(query: string, categoryId?: number) {
-    // Validate query exists and is at least 2 characters
-    if (!query || query.trim().length < 2) {
-        return [];
-    }
+export async function searchForProducts(query: string, categoryId?: number, limit?: number, fields?: string[]) {
 
     // Use Prisma.sql for safe SQL template tagging
     const categoryCondition = categoryId
         ? Prisma.sql`AND p."categoryId" = ${categoryId}`
         : Prisma.empty;
 
+    const limitCondtion = limit && limit > 0 ? Prisma.sql`LIMIT ${limit}` : Prisma.empty;
+
+    // If custom fields are provided, validate and build the select clause.
+    let selectClause = 'p.*';
+    if (fields && fields.length > 0) {
+        // Validate each field against allowed fields
+        const sanitizedFields = fields.filter((field) => ALLOWED_PRODUCT_FIELDS.has(field));
+        if (sanitizedFields.length === 0) {
+            throw new Error("No valid fields provided for selection.");
+        }
+        selectClause = sanitizedFields.join(", ");
+    }
+
     try {
-        return await prisma.$queryRaw<searchType[]> `
-            SELECT 
-                p.product_id, 
-                p.product_name 
+        return await prisma.$queryRaw<Product[]> `
+            SELECT ${Prisma.raw(selectClause)}
             FROM "Product" p
             JOIN "User" u ON u.user_id = p.user_created_product_id
             WHERE (
-                p.product_name ILIKE ${`%${query}%`} 
-                OR u.name ILIKE ${`%${query}%`}
+                p.product_name ILIKE '%' || ${query.trim()} || '%' 
+                OR u.name ILIKE '%' || ${query.trim()} || '%'
             )
             ${categoryCondition}
-            LIMIT 9
+            ${limitCondtion}
         `;
     } catch (error) {
         console.error("Search query failed:", error);
         throw new Error("Failed to execute product search");
     }
 }
-
-// export async function getProducs({ query }: { query?: string }) {
-//     prisma.$queryRaw<Product[]> `
-//     SELECT * FROM p.* FROM "Products" p
-//     JOIN "Category" ON "category_id" = p.categoryId,
-//     JOIN "User" u ON u.name = ${query}
-//     WHERE "product_name" LIKE '%${query}%'
-//     OR
-//     `;
-// }

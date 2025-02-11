@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     const categoryId = Number(searchParams.get('categoryId')) || 0;
 
     if (!query) return NextResponse.json([]);
-    const data = await searchForProducts(query, categoryId);
+    const data = await searchForProducts(query, categoryId,9,['product_id','product_name']);
     return NextResponse.json(data);
 
 }

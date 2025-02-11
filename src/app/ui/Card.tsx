@@ -1,10 +1,12 @@
+'use client'
+
 import { Product } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { MouseEvent } from "react";
 
-export function Cards({ product }: { product: Product }) {
+export function Card({ product }: { product: Product }) {
     const [inputValue, setInputValue] = useState<number>(1);
 
     const changeValue = (e: MouseEvent<HTMLButtonElement>, add = false) => {
@@ -39,7 +41,7 @@ export function Cards({ product }: { product: Product }) {
 
                     {/* Product Image */}
                     <figure>
-                        <Link href={`/products/${product.product_id}`}>
+                        <Link href={`/product/${product.product_id}`}>
                             <Image
                                 width={200}
                                 height={200}

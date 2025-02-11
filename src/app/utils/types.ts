@@ -1,5 +1,5 @@
 // backend/types.ts
-import { Ads } from "@prisma/client";
+import { Ads, Product } from "@prisma/client";
 
 // Create a type that includes both Ads and Product
 export type AdWithDiscount = Ads & { product: { discount: string | null } };

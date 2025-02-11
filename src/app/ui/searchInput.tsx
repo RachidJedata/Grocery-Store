@@ -1,8 +1,7 @@
 'use client'
 
-import { Category } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { searchType } from "../utils/types";
+import { Category, Product } from "@prisma/client";
+import { useState } from "react";
 import Link from "next/link";
 import { useDebouncedCallback } from 'use-debounce'
 
@@ -10,7 +9,7 @@ import { useDebouncedCallback } from 'use-debounce'
 export function SearchInput({ categories }: { categories: Category[] }) {
     const [isFocused, setIsFocused] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [suggestedProducts, setSuggestedProducts] = useState<searchType[]>([]);
+    const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
 
     const handleSearch = useDebouncedCallback((query) => {
         const fetchProductNames = async () => {
@@ -33,7 +32,7 @@ export function SearchInput({ categories }: { categories: Category[] }) {
                 </select>
             </div>
             <div className="col-11 col-md-7">
-                <form id="search-form" className="text-center" action="index.html" method="post">
+                <form id="search-form" className="text-center" action="/products" method="get">
                     <input
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
@@ -41,14 +40,19 @@ export function SearchInput({ categories }: { categories: Category[] }) {
                         type="text"
                         className="form-control border-0 bg-transparent"
                         placeholder="Search for products"
+                        name="search"
                     />
                 </form>
             </div>
-            <div className={`w-2/5 bg-slate-400 divide-y rounded-lg transition duration-500 h-96 absolute top-20 z-10 ${isFocused ? 'block' : 'hidden'
+            <div className={`w-2/5 bg-slate-200 divide-y rounded-lg transition duration-500 h-96 absolute top-20 z-10 ${isFocused ? 'block' : 'hidden'
                 }`} >
                 {suggestedProducts.map(product => (
                     <div className="block py-2" key={product.product_id}>
-                        <Link className="hover:text-slate-100 hover:underline transition" href={`product/${product.product_id}`}>{product.product_name}</Link>
+                        <Link
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setIsFocused(false)}
+                            className="hover:text-orange-900 hover:underline transition"
+                            href={`/product/${product.product_id}`}>{product.product_name}</Link>
                     </div>
                 ))}
             </div>
@@ -56,7 +60,7 @@ export function SearchInput({ categories }: { categories: Category[] }) {
     );
 }
 export function SearchInputMobile() {
-    const [suggestedProducts, setSuggestedProducts] = useState<searchType[]>([]);
+    const [suggestedProducts, setSuggestedProducts] = useState<Product[]>([]);
 
     const handleSearch = useDebouncedCallback((query) => {
         const fetchProductNames = async () => {

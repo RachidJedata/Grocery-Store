@@ -2,7 +2,6 @@
 
 import { Category } from "@prisma/client";
 import clsx from "clsx";
-import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function GetTrendingCategories({ categories }: { categories: Category[] }) {
