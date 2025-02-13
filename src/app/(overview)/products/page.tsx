@@ -1,5 +1,5 @@
 import { searchForProducts } from "@/app/lib/action";
-import { Card } from "@/app/ui/card";
+import { Card } from "@/app/ui/Card";
 import Link from "next/link";
 
 export default async function Page({

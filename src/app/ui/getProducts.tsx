@@ -3,7 +3,7 @@
 import { Product } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Card } from "./card";
+import { Card } from "./Card";
 
 // This component renders a grid of products
 export function GetProducts() {

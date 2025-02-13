@@ -1,5 +1,5 @@
 import { getProduct, getProductsByCategory } from "@/app/lib/action";
-import { Card } from "@/app/ui/card";
+import { Card } from "@/app/ui/Card";
 import Image from "next/image";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

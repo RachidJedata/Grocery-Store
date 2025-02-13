@@ -19,9 +19,9 @@ export async function Blogs() {
                 <div className="row">
                     {blogs.map(blog => (
                         <div key={blog.blog_id} className="col-md-4">
-                            <Link href={blog.blog_id} className="post-item card border-0 shadow-sm p-3">
+                            <Link href={`blogs/${blog.blog_id}`} className="post-item card border-0 shadow-sm p-3">
                                 <div className="image-holder zoom-effect">
-                                    <Image height={200} width={200} src={`/${blog.imageUrl}`} alt={blog.title} className="card-Image-top w-full" />
+                                    <Image height={200} width={200} src={`/${blog.imageUrl}`} alt={blog.title} className="card-Image-top w-full" ></Image>
                                 </div>
                                 <div className="card-body">
                                     <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
@@ -29,7 +29,7 @@ export async function Blogs() {
                                         <div className="meta-categories flex items-center"><svg width="16" height="16"><use href="#category"></use></svg>{blog.category.name}</div>
                                     </div>
                                     <div className="post-header">
-                                            <h3 className="post-title text-decoration-none font-bold">{blog.title}</h3>                                        
+                                        <h3 className="post-title text-decoration-none font-bold">{blog.title}</h3>
                                         <p className="truncate w-full">{blog.body}</p>
                                     </div>
                                 </div>

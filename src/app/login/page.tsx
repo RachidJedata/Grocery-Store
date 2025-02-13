@@ -1,4 +1,4 @@
-export async function Page() {
+export default async function Page() {
     return (
         <section className="py-5">
             <div className="container-fluid">
