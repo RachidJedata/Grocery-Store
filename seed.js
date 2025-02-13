@@ -86,9 +86,9 @@ const categories = [
     { name: "Condiments" }
 ];
 const users = [
-    { name: "rachid jedata", email: 'me@gmail.com', password: 'rachid', avatar: 'images/reviewer-1.jpg', isVendor: true },
-    { name: "malika id lahaj", email: 'idlahaj@gmail.com', password: 'malika', avatar: 'images/reviewer-2.jpg', isVendor: true },
-    { name: "rim jedata", email: 'rim.j@hotmail.com', password: 'rim', avatar: 'images/reviewer-3.jpg', isVendor: false }
+    { name: "rachid jedata", email: 'me@gmail.com', password: 'rachid', avatar: 'avatar/reviewer-1.jpg', isVendor: true },
+    { name: "malika id lahaj", email: 'idlahaj@gmail.com', password: 'malika', avatar: 'avatar/reviewer-2.jpg', isVendor: true },
+    { name: "rim jedata", email: 'rim.j@hotmail.com', password: 'rim', avatar: 'avatar/reviewer-3.jpg', isVendor: false }
 ]
 
 const ads = [

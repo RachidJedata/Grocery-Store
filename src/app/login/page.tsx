@@ -1,3 +1,13 @@
+import Image from "next/image";
+
+import { Metadata } from 'next';
+import { Suspense } from "react";
+import LoginForm  from "../ui/login-form";
+
+export const metadata: Metadata = {
+    title: 'Login'
+};
+
 export default async function Page() {
     return (
         <section className="py-5">
@@ -7,32 +17,15 @@ export default async function Page() {
                     <div className="container my-5">
                         <div className="row">
                             <div className="col-md-6 p-5">
-                                <div className="section-header">
-                                    <h2 className="section-title display-4">Get <span className="text-primary">25% Discount</span> on your first purchase</h2>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictumst amet, metus, sit massa posuere maecenas. At tellus ut nunc amet vel egestas.</p>
+                                <Image width={500} height={500} src="/images/logo.png" alt="logo" className="Image-fluid" />
+                                <p className="pt-4">Login to grocery store, so that you can buy , mark as favourite and so on...
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur assumenda iusto tempora similique praesentium magnam
+                                </p>
                             </div>
                             <div className="col-md-6 p-5">
-                                <form>
-                                    <div className="mb-3">
-                                        <label htmlFor="name" className="form-label">Name</label>
-                                        <input type="text"
-                                            className="form-control form-control-lg" name="name" id="name" placeholder="Name" />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="" className="form-label">Email</label>
-                                        <input type="email" className="form-control form-control-lg" name="email" id="email" placeholder="abc@mail.com" />
-                                    </div>
-                                    <div className="form-check form-check-inline mb-3">
-                                        <label className="form-check-label" htmlFor="subscribe">
-                                            <input className="form-check-input" type="checkbox" id="subscribe" value="subscribe" />
-                                            Subscribe to the newsletter</label>
-                                    </div>
-                                    <div className="d-grid gap-2">
-                                        <button type="submit" className="btn btn-dark btn-lg">Submit</button>
-                                    </div>
-                                </form>
-
+                                <Suspense>
+                                    <LoginForm />
+                                </Suspense>
                             </div>
 
                         </div>
