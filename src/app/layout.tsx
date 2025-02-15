@@ -1,8 +1,11 @@
+import 'server-only';
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 
 import Script from "next/script";
+import { Providers } from './providers';
 
 
 
@@ -25,12 +28,13 @@ export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {  
+}) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-
-        {children}
+        <Providers>
+          {children}
+        </Providers>
 
         {/* External JS files added with the Script component */}
 

@@ -1,15 +1,9 @@
-import type { NextConfig } from 'next';
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    appDir: true,
+    serverComponentsExternalPackages: ['@prisma/client', 'bcrypt']
+  }
+}
 
-const nextConfig: NextConfig = {
-  webpack: (config: any, { isServer }: { isServer: boolean }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...(config.resolve.fallback || {}),
-        fs: false,
-      };
-    }
-    return config;
-  },
-};
-
-export default nextConfig;
+module.exports = nextConfig

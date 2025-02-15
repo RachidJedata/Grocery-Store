@@ -1,9 +1,7 @@
 'use server'
 
 import prisma from '@/app/lib/prisma';
-import { signIn } from '@/auth';
 import { Category, Prisma, Product } from '@prisma/client';
-import { AuthError } from 'next-auth';
 
 export async function getCategories() {
     return await prisma.category.findMany();
@@ -135,24 +133,5 @@ export async function searchForProducts(query: string, categoryId?: number, limi
     } catch (error) {
         console.error("Search query failed:", error);
         throw new Error("Failed to execute product search");
-    }
-}
-
-export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData
-) {
-    try {
-        await signIn('credentials', formData);
-    } catch (error) {
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case 'CredentialsSignin':
-                    return 'Invalid credentials.';
-                default:
-                    return 'Something went wrong.';
-            }
-        }
-        throw error;
     }
 }

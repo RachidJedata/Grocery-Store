@@ -6,13 +6,18 @@ import { ShowCategories } from "../ui/showCategories";
 import Link from "next/link";
 import { SearchInput, SearchInputMobile } from "../ui/searchInput";
 import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { User } from "../user";
+import { LoginButton } from "../ui/auth";
 
-export default async function RootLayout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const categories = await getCategories();
+  const session = await getServerSession(authOptions);
   return (
     <>
       <div className="offcanvas offcanvas-end" data-bs-scroll="true" tabIndex={-1} id="offcanvasCart" aria-labelledby="My Cart">
@@ -86,7 +91,14 @@ export default async function RootLayout({
             </div>
 
             <div className="col-sm-8 col-lg-4 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
-
+              <Suspense>
+                {/* <LoginButton/> */}
+                <button className="rounded-lg font-bold bg-slate-100 text-orange-700 py-2 px-4">
+                  {/* <UserName /> */}
+                  {session?.user.userId}
+                  {/* <User /> */}
+                </button>
+              </Suspense>
               <ul className="d-flex justify-content-end list-unstyled m-0">
                 <li>
                   <a href="#" className="rounded-full p-2 mx-1">
