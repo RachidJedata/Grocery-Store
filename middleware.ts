@@ -1,14 +1,6 @@
-import { withAuth } from "next-auth/middleware";
-
-export default withAuth((req) => {
-  console.log("Middleware triggered for:", req.nextUrl.pathname);
-  // You can perform additional custom logic here if needed.
-}, {
-  pages: {
-    signIn: "/auth/signin",
-  },
-});
+export { default } from 'next-auth/middleware'
 
 export const config = {
-  matcher: ['/dashboard']
-};
+  matcher: ['/dashboard', '/app/:path*', '/other/:path*', '/help/:path*']
+}
+console.log('middleware is running');
